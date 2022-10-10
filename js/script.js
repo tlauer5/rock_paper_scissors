@@ -42,46 +42,58 @@ function playRound() {
     
     let playerSelection; //= getComputerChoice();
     let computerSelection; //= getComputerChoice();
-
-    let playerWins = 0;
-    let computerWins = 0;
     let outcome;
 
-
     computerSelection = getComputerChoice();
-    //playerSelection = prompt("Your turn", "Rock/Paper/Scissor").toLowerCase();
     playerSelection = this.classList.value;
 
-    console.log('PlayersChoice: ' + this.classList.value)
-
     outcome = decideWinner(playerSelection, computerSelection);
-    /*outcome_idx = determineWinner(outcome); // 1 Player wins, -1 Computer wins, 0 Draw
-    if ( outcome_idx == 1) {
-        if (++playerWins == 3) return "Player";
-    } else if (outcome_idx == -1) {
-        if (++computerWins == 3) return "Computer"
-    }*/
-
-    console.log("Computer's choice: " + computerSelection + "\n" + outcome);   
-
-    //return outcome;
+    outcome_idx = determineWinner(outcome); // 1 Player wins, -1 Computer wins, 0 Draw
+    
     res.textContent=outcome;
+
+    updateScoreboard(outcome_idx);
 }
 
-res = document.querySelector('.result');
 
+function reset() {
+
+    playerWins = 0; 
+    computerWins = 0; 
+    playerScore.textContent = playerWins;
+    computerScore.textContent = computerWins; 
+    winningMessage.textContent = "";
+}
+
+function updateScoreboard(winner) {
+
+    if(winner === 1) {
+        playerWins++;
+        playerScore.textContent = playerWins;
+        if(playerWins === 5) {
+            winningMessage.textContent = "You won the overall game! Congrats:)";
+
+            setTimeout(reset, 5000);
+        }
+    }
+    else if (winner === -1) {
+        computerWins++;
+        computerScore.textContent = computerWins; 
+        if(computerWins === 5) {
+            winningMessage.textContent = "You lost the overall game:(";
+            setTimeout(reset, 5000);
+        }
+    }
+}
+
+let playerWins = 0; 
+let computerWins = 0; 
+
+const winningMessage = document.querySelector('h3');
+const res = document.querySelector('.result');
+const playerScore = document.querySelector('.score-player');
+playerScore.textContent = playerWins;
+const computerScore = document.querySelector('.score-computer');
+computerScore.textContent = computerWins; 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(btn => btn.addEventListener('click', playRound));
-
-/*const buttons = document.querySelectorAll('.buttons');
-buttons.forEach(btn => btn.addEventListener('click', playRound));
-*/
-
-//alert("Overall Winner: " + game());
-
-
-
-
-
-//alert("Player: " + playerSelection + "\nComputer: " + computerSelection + 
-  //      "\n\n" + decideWinner(playerSelection, computerSelection));
